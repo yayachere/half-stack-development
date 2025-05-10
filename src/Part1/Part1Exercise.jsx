@@ -1,4 +1,4 @@
-const Exercise = () => {
+const Part1Exercise = () => {
 
     const course = {
       name: 'Half Stack application development',
@@ -56,4 +56,4 @@ const Exercise = () => {
       )
     }
     
-    export default Exercise
+    export default Part1Exercise

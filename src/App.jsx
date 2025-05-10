@@ -2,50 +2,50 @@ import { useState } from 'react'
 import Exercise from './Exercise'
 
 const App = () => {
-
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-  const [all, setAll] = useState(0)
-  const [average, setAverage] = useState(0)
-  const [positive, setPositive] = useState(0)
-
-  const handleGood = () => {
-    setGood(good + 1)
-    handleAverage()
-    handlePositive()
+  const [votes, setVotes] = useState(Array(8).fill(0))
+  const [selected, setSelected] = useState(0)
+  const [mostVotes, setMostVotes] = useState(0)
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+ 
+  
+  const handleNext = () => {
+    selected !== 7 ? setSelected(selected + 1) : setSelected(0)
   }
-
-  const handleNeutral = () => {
-    setNeutral(neutral + 1)
+  const handleVote = () => {
+    const copy = [...votes] 
+    copy[selected] += 1
+    setVotes(copy)
+    handleMostVotes()
   }
-
-  const handleBad = () => {
-    setBad(bad + 1)
-    handleAverage()
-    handlePositive()
+  const handleMostVotes = () => {
+    const maxVotes = Math.max(...votes)
+    const index = votes.indexOf(maxVotes)
+    setMostVotes(index)
   }
-
- const handleAverage = () => {
-    setAverage((good - bad) / (good + neutral + bad))
-  }
-  const handlePositive = () => {
-    setPositive(Math.round((good / (good + neutral + bad)) * 100))
-  }
-
+ 
   return (
     <div>
-      <h1>give feedback</h1>
-      <button onClick={handleGood}>good</button>
-      <button onClick={handleNeutral}>neutral</button>
-      <button onClick={handleBad}>bad</button>
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all : {good + neutral + bad} feedbacks!</p>
-      <p>average {average}</p>
-      <p>positive {positive}%</p>
+      <div className='anecdote-container'>
+        <h1>Anecdotes of the Day</h1>
+      {anecdotes[selected]}
+      <p>has {votes[selected]} votes!</p>
+      </div>
+      <div className='button-group'>   
+      <button className='btn' onClick={handleVote}>Vote</button>
+      <button className='btn' onClick={handleNext}>Next Anecdote</button>
+      <h1>Anecdote with most Votes!</h1>
+      {anecdotes[mostVotes]}
+      <p>has {votes[mostVotes]} votes!</p>
+      </div>
       <Exercise />
     </div>
   )
